@@ -1,13 +1,18 @@
 <?php 
     $firstname = $name = $email = $phone = $message = "";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $firstname = $_POST['firstname'];
-        $name      = $_POST['name'];
-        $email     = $_POST['email'];
-        $phone     = $_POST['phone'];
-        $message   = $_POST['message'];
+        $firstname = verifyInput($_POST['firstname']);
+        $name      = verifyInput($_POST['name']);
+        $email     = verifyInput($_POST['email']);
+        $phone     = verifyInput($_POST['phone']);
+        $message   = verifyInput($_POST['message']);
     }
 
+    function verifyInput($var) {
+        $var = trim($var);
+
+        return $var;
+    }
 
 ?>
 
@@ -32,7 +37,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1" >
-                    <form id="contact-form" method="POST" action="<?= $_SERVER['PHP_SELF']; ?>" role="form">
+                    <form id="contact-form" method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" role="form">
                         <div class="row">
 
                             <div class="col-md-6">
