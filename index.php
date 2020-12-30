@@ -1,27 +1,35 @@
 <?php 
     $firstname = $name = $email = $phone = $message = "";
     $firstnameError = $nameError = $emailError = $phoneError = $messageError = "";
+    $isSuccess = false;
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $firstname = verifyInput($_POST['firstname']);
         $name      = verifyInput($_POST['name']);
         $email     = verifyInput($_POST['email']);
         $phone     = verifyInput($_POST['phone']);
         $message   = verifyInput($_POST['message']);
+        $isSuccess = true;
 
         if (empty($firstname)) {
             $firstnameError = "Ton prénom est requis !";
+            $isSuccess = false;
         }
         if (empty($name)) {
             $nameError = "Ton nom est indispensable !";
+            $isSuccess = false;
         }
         if (empty($message)) {
             $messageError = "Une petite description de toi serait la bienvenue !";
+            $isSuccess = false;
         }
         if (!isEmail($email)) {
             $emailError = "Ca ne ressemble pas à un email ça !";
+            $isSuccess = false;
         }
         if (!isPhone($phone)) {
             $phoneError = "Ne mettre que des chiffres et des espaces !";
+            $isSuccess = false;
         }
 
     }
@@ -107,7 +115,7 @@
                             
                         </div>
 
-                        <p class="thank-you">Votre message a bien été envoyé. Merci de m'avoir contacté :)</p>
+                        <p class="thank-you" style="display:<?php if($isSuccess) echo 'block'; else echo 'none'; ?>;">Votre message a bien été envoyé. Merci de m'avoir contacté :)</p>
 
                     </form>
 
