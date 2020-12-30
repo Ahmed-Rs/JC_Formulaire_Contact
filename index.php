@@ -1,7 +1,10 @@
 <?php 
-    $firstname = $name = $email = $phone = $message = "";
     $firstnameError = $nameError = $emailError = $phoneError = $messageError = "";
     $isSuccess = false;
+    $emailTo = "ahmedrassoulahmed@gmail.com";
+    $firstname = $name = $email = $phone = $message = "";
+
+
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $firstname = verifyInput($_POST['firstname']);
@@ -10,26 +13,43 @@
         $phone     = verifyInput($_POST['phone']);
         $message   = verifyInput($_POST['message']);
         $isSuccess = true;
+        $emailText = "";
 
         if (empty($firstname)) {
             $firstnameError = "Ton prénom est requis !";
             $isSuccess = false;
+        } else {
+            $emailText .= "Firstname : $firstname\n";
         }
         if (empty($name)) {
             $nameError = "Ton nom est indispensable !";
             $isSuccess = false;
-        }
-        if (empty($message)) {
-            $messageError = "Une petite description de toi serait la bienvenue !";
-            $isSuccess = false;
+        } else {
+            $emailText .= "name : $name\n";
         }
         if (!isEmail($email)) {
             $emailError = "Ca ne ressemble pas à un email ça !";
             $isSuccess = false;
+        } else {
+            $emailText .= "email : $email\n";
         }
         if (!isPhone($phone)) {
             $phoneError = "Ne mettre que des chiffres et des espaces !";
             $isSuccess = false;
+        } else {
+            $emailText .= "phone : $phone\n";
+        }
+        if (empty($message)) {
+            $messageError = "Une petite description de toi serait la bienvenue !";
+            $isSuccess = false;
+        } else {
+            $emailText .= "message: $message\n";
+        }
+        
+        if ($isSuccess) {
+            $headers = "From: $firstname $name <$email>\r\nReply-To: $email";
+            mail($emailTo, "Un message pour vous", $emailText, $headers);
+            $firstname = $name = $email = $phone = $message = "";
         }
 
     }
